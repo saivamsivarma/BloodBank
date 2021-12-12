@@ -1,0 +1,15 @@
+.bg-colored{
+    background-color: #FF2442;
+}
+
+.height-div{
+    height: 100vh;
+}
+
+
+@media only screen and (max-width: 800px)
+{
+    .height-div{
+        height: 8vh;
+    }
+}

@@ -1,0 +1,15 @@
+.or {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 2px solid #ff2442;
+    line-height: 0.1em;
+    margin: 25px 0;
+  }
+  .or span {
+    background: #ffffff;
+    padding: 0 10px;
+  }
+
+  .height-max{
+    height: 100vh;
+}

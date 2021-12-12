@@ -1,0 +1,363 @@
+<div class="container" *ngIf="api.userDetailsLoad">
+    <div class="row align-items-center justify-content-center" style="height: 100vh;">
+        <div class="col-1">
+            <div class="spinner-grow text-danger" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-5" *ngIf="!api.userDetailsLoad">
+    <div *ngIf="api.Role==='newUser'">
+
+        <div class="row my-2 align-items-center" style="height:90vh">
+            <div class="col-12">
+                <button class="btn primary-outline-btn shadow float-end " (click)="Logout()">Logout</button>
+            </div>
+            <div class="col-12 col-md-7 col-lg-5">
+                <div class="text-center text-md-start">
+                    <div class="d-md-flex align-items-center">
+                        <div class="fw-bold fs-2 color-primary">Welcome to</div><img src="../../../assets/logo.svg"
+                            alt="logo" height="45">
+                    </div>
+                    <div class="card shadow p-3 my-3">
+                        <div class="row">
+                            <div class="col-12 col-md-2">
+                                <img src="../../../assets/user.svg" alt="">
+                            </div>
+                            <div class="col-12 col-lg-10">
+                                <div class="fs-4 fw-bold color-primary">{{api.userDetailsObj.firstName}}
+                                    {{api.userDetailsObj.lastName}}</div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="badge bg-custom">BloodType: {{api.userDetailsObj.bloodType}}</span>
+                                    <span class="badge bg-primary">Pending User</span>
+                                    <span class="badge bg-success">{{api.getAppointmentsObj.length}} Appointments</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="api.getAppointmentsObj.length===0">
+                </div>
+                <div *ngIf="api.getAppointmentsLoad">
+                    <div class="spinner-border color-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div *ngIf="!api.getAppointmentsLoad">
+                    <div *ngIf="api.getAppointmentsObj.length!=0">
+                        <div class="color-primary fw-bold">Upcoming Appointment</div>
+                        <div class="card shadow p-3" *ngFor="let item of api.getAppointmentsObj">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="fs-4 fw-bold color-primary text-center">
+                                        {{item.organization_details.organization_Name}}</div>
+                                    <div class="fs-5 color-secondary text-justify">{{item.organization_details.address}}
+                                    </div>
+                                </div>
+                                <div class="col-5 text-center">
+                                    <div class="color-primary">Data: <span
+                                            class="color-secondary">{{item.appointment_date}}</span></div>
+                                </div>
+                                <div class="col-7 text-center">
+                                    <div class="color-primary">Time: <span class="color-secondary">{{item.time}}</span>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-around my-2">
+                                    <button class="btn primary-btn">View Details</button>
+                                    <div class="btn primary-outline-btn">Reschedule</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!api.pendingMemberLoad">
+                    <div *ngIf="api.pendingMemberObj.length!=0">
+                        <div class="color-primary fw-bold my-2">Member Request</div>
+                        <div class="card shadow p-2" *ngFor="let item of api.pendingMemberObj">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img src="../../../assets/user.svg" alt="">
+                                </div>
+                                <div class="col-10">
+                                    <div class="fs-4 fw-bold color-primary">{{item.firstName}}
+                                        {{item.lastName}}</div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="badge bg-custom">BloodType: {{item.bloodType}}</span>
+                                        <span class="badge bg-primary">{{item.roleType}}</span>
+                                        <span class="badge bg-success">Request sent</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-5 col-lg-7 text-center">
+                <div *ngIf="api.getAppointmentsLoad">
+                    <div class="spinner-border color-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div *ngIf="!api.getAppointmentsLoad">
+                    <div *ngIf="api.getAppointmentsObj.length===0">
+                        <img src="../../../assets/Waiting.svg" alt="" height="500">
+                        <div class="fw-bold text-secondary my-3">Make an Appointment, Get tested, Become a <span
+                                class="color-primary fs-3">Verified User</span> </div>
+                        <button class="btn primary-btn shadow" [routerLink]="['/testAppointments']">Make an
+                            Appointment</button>
+                    </div>
+                    <div *ngIf="api.getAppointmentsObj.length!=0 && api.userDetailsObj.pendingMember.length===0">
+                        <img src="../../../assets/Family.svg" alt="">
+                        <div class="fw-bold text-secondary my-3">Share Your Profile with <span
+                                class="color-primary fs-3"> Family Members</span> </div>
+                        <button class="btn primary-btn shadow" data-bs-toggle="modal" data-bs-target="#exampleModal">Add
+                            a Member</button>
+                    </div>
+                    <div *ngIf="api.pendingMemberObj.length!=0">
+                        <img src="../../../assets/review.svg" alt="">
+                        <div class="fw-bold text-secondary my-3">congratulations Your Profile<span
+                                class="color-primary fs-3"> is in Review</span> </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row gy-2" *ngIf="api.Role==='Member'||api.Role==='Donor'">
+        <div class="col-12">
+            <div class="d-flex justify-content-between my-3">
+                <div class="fs-2 fw-bold">Welcome <span class="color-primary">{{api.userDetailsObj.firstName}}</span>
+                </div>
+                <div class="d-flex justify-content-around align-items-center">
+                    <img src="../../assets/user.svg" alt="userimg" height="55">
+                    <div class="dropdown">
+                        <button class="btn dropdown-toggle" type="button" id="dropdownMenu2" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        </button>
+                        <div class="dropdown-menu shadow" aria-labelledby="dropdownMenu2">
+                            <div class="p-2 d-flex justify-content-between">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Family
+                                    Share</label>
+                                <div class="form-switch d-flex">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="flexSwitchCheckDefault" [(ngModel)]="api.userDetailsObj.familyShare" (ngModelChange)="familyShareToggle()" [ngModelOptions]="{standalone: true}">                                </div>
+                            </div>
+                            <div class="p-2 d-flex justify-content-between">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">My City</label>
+                                <div class="form-switch d-flex">
+                                    <input class="form-check-input " type="checkbox" role="switch"
+                                        id="flexSwitchCheckDefault" checked [(ngModel)]="api.userDetailsObj.locationNotification" (ngModelChange)="locationToggle()" [ngModelOptions]="{standalone: true}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-12 px-4">
+            <div class="card shadow p-2 custom-bg">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-5 text-center">
+                        <img src="../../../assets/donation.svg" alt="" height="100" class="img-custom">
+                    </div>
+                    <div class="col-12 col-lg-7 text-center">
+                        <div class="fs-1 fw-bold text-white">
+                            Save <span class="color-primary">3 Lives</span> for every donation you make.
+                        </div>
+                        <div class="d-flex justify-content-around my-2">
+                            <button class="btn primary-outline-btn">Learn More</button>
+                            <button class="btn primary-btn">Appointment</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 px-4 my-2" >
+            <div class="fs-4 fw-bold">Members <span class="color-primary">Request</span></div>
+            <div class="row" *ngIf="api.requestMemberLoad">
+                <div class="col-12">
+                    <div class="spinner-border color-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="!api.requestMemberLoad">
+                <div class="col-12" *ngIf="api.requestMemberObj.length===0">
+                    <div class="text-center color-primary fw-bold fs-4"> No Request</div>
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of api.requestMemberObj">
+                    <div class="card shadow p-2 rounded">
+                        <div class="row gy-2">
+                            <div class="col-2">
+                                <img src="../../../assets/user.svg" alt="">
+                            </div>
+                            <div class="col-10">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="color-primary fw-bold fs-6">{{item.firstName}} {{item.lastName}}</div>
+                                    <div class="badge bg-primary">{{item.roleType}}</div>
+                                </div>
+        
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-secondary">Age: {{item.age}}</div>
+                                    <div class="text-secondary">{{item.state}}</div>
+                                    <div class="text-secondary">+1{{item.phone_number}}</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex justify-content-around">
+                                    <button class="btn primary-outline-btn">Cancel</button>
+
+                                    <button class="btn primary-btn" (click)="AcceptMember(item._id)">Accept</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="col-12 px-4">
+            <div class="fs-4 fw-bold">Our <span class="color-primary">Partner Hospitals</span></div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of api.organizationCityObj">
+            <div class="card shadow p-3">
+                <div class="row align-items-center">
+                    <div class="col-4 text-center">
+                        <img src="../../assets/organization.svg" alt="img" height="120" width="100">
+                    </div>
+                    <div class="col-8">
+                        <div class="color-secondary fw-bold fs-5">{{item.organization_Name}}</div>
+                        <div class="color-primary">{{item.address}}</div>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-secondary">{{item.city}}</div>
+                            <div class="text-secondary">{{item.state}}</div>
+                            <div class="text-secondary">{{item.zipcode}}</div>
+                        </div>
+                        <div class="badge bg-primary" *ngIf="item.status==='Completed'">Verified</div>
+                        <div class="badge bg-danger" *ngIf="item.status==='Pending'">Not Verified</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title color-primary" id="exampleModalLabel">Add Family Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group border border-danger rounded-pill p-1 shadow">
+                        <input type="text" class="form-control border-0 rounded-pill"
+                            placeholder="Search by First Name,Last Name, Contact Number" [(ngModel)]="textSearch"
+                            (ngModelChange)="userSearch()" [ngModelOptions]="{standalone: true}">
+                    </form>
+                    <div class="col-12 my-3" *ngIf="!api.userSearchElement">
+                        <div class="d-flex justify-content-center align-items-center" *ngIf="api.getUsersLoad"
+                            style="height: 90vh;">
+                            <div class="spinner-border color-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div *ngIf="!api.getUsersLoad && !api.userSearchElement">
+                            <div class="d-flex justify-content-center align-items-center"
+                                *ngIf="api.getUsersObj.length===0" style="height: 90vh;">
+                                <div class="color-primary fw-bold fs-3">No Members</div>
+                            </div>
+                            <div *ngIf="api.getUsersObj.length!=0">
+                                <div class="row" *ngFor="let i of api.getUsersObj">
+                                    <div class="col-12" *ngIf="i._id!=api.userDetailsObj._id">
+                                        <div class="card shadow p-2 my-3">
+                                            <div class="row p-2">
+                                                <div class="col-3">
+                                                    <img src="../../assets/user.svg" alt="user-img" class="rounded-pill"
+                                                        height="85" width="85">
+                                                </div>
+                                                <div class="col-9 my-auto">
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <div class="fw-bold fs-md-5">{{i.firstName}} {{i.lastName}}
+                                                        </div>
+                                                        <div class="badge bg-danger rounded"> {{i.bloodType}}</div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div class="text-secondary">Age: {{i.age}}</div>
+                                                        <div class="texbt-secondary">{{i.gender}}</div>
+                                                        <div class="text-secondary">{{i.state}}</div>
+                                                    </div>
+                                                    <div class="status color-secondary fw-bold"
+                                                        *ngIf="i.roleType==='newUser'">New
+                                                        User</div>
+                                                    <div class="status color-primary fw-bold"
+                                                        *ngIf="i.roleType==='Donor'">
+                                                        Blood<span class="color-secondary">Donor</span></div>
+                                                    <div class="status color-primary fw-bold"
+                                                        *ngIf="i.roleType==='Member'">Member
+                                                    </div>
+                                                    <div class="btn primary-btn" (click)="add(i._id)" data-bs-dismiss="modal">Add Member</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 my-3" *ngIf="api.userSearchElement">
+                        <div class="d-flex justify-content-center align-items-center" *ngIf="api.userSearchLoad"
+                            style="height: 90vh;">
+                            <div class="spinner-border color-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                        <div *ngIf="!api.userSearchLoad">
+                            <div class="d-flex justify-content-center align-items-center"
+                                *ngIf="api.userSearchObj.length===0" style="height: 30vh;">
+                                <div class="color-primary fw-bold fs-3">No Results Found</div>
+                            </div>
+                            <div class="row" *ngIf="api.userSearchObj.length!=0">
+                                <div class="col-12" *ngFor="let i of api.userSearchObj">
+                                    <div class="card shadow p-2" *ngIf="i._id!=api.userDetailsObj._id">
+                                        <div class="row p-2">
+                                            <div class="col-3">
+                                                <img src="../../assets/user.svg" alt="user-img" class="rounded-pill"
+                                                    height="85" width="85">
+                                            </div>
+                                            <div class="col-9 my-auto">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="fw-bold fs-md-5">{{i.firstName}} {{i.lastName}}</div>
+                                                    <div class="badge bg-danger rounded"> {{i.bloodType}}</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="text-secondary">Age: {{i.age}}</div>
+                                                    <div class="texbt-secondary">{{i.gender}}</div>
+                                                    <div class="text-secondary">{{i.state}}</div>
+                                                </div>
+                                                <div class="status color-secondary fw-bold"
+                                                    *ngIf="i.roleType==='newUser'">New
+                                                    User</div>
+                                                <div class="status color-primary fw-bold" *ngIf="i.roleType==='Donor'">
+                                                    Blood<span class="color-secondary">Donor</span></div>
+                                                <div class="status color-primary fw-bold" *ngIf="i.roleType==='Member'">
+                                                    Member
+                                                </div>
+                                                <div class="btn primary-btn" (click)="add(i._id)">Add Member</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>

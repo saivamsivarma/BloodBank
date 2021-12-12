@@ -1,0 +1,8 @@
+.custom-margin{
+    margin: -20px;
+}
+
+.primary-outline-btn:hover{
+    background-color: #FF2442;
+    color: #ffffff !important;
+}

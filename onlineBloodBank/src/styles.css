@@ -1,0 +1,74 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    font-family: 'Montserrat',sans-serif;
+}
+.primary-btn{
+    background-color: #FF2442;
+    color: #ffffff;
+}
+
+.secondary-btn{
+    background-color: #3DB2FF;
+    color:#ffffff;
+}
+
+.primary-btn:hover{
+    color: #ffffff;
+}
+
+.primary-outline-btn{
+    border:2px solid #FF2442;
+    color:#FF2442;
+}
+
+.primary-outline-btn:hover{
+    background-color: #FF2442;
+    color: #ffffff;
+}
+
+.color-primary{
+    color:#FF2442;
+
+}
+.colored-border{
+    border:2px solid #ff2442 !important;
+}
+
+.form-control:focus,.form-select:focus{
+    border-color:#FF2442;
+    outline: 0;
+    -webkit-box-shadow: inset 0 0px 0px rgba(255, 255, 255, 0.075),0 0 8px rgba(255, 255, 255, 0.6);
+    box-shadow: inset 0 0px 0px rgba(255, 255, 255, 0.075),0 0 8px rgba(255, 255, 255, 0.6);
+}
+.bg-colored{
+    background-color: #FF2442;
+}
+
+.color-secondary{
+    color:#3DB2FF;
+}
+
+.height-div{
+    height: 100vh;
+}
+
+.card-border-primary{
+    border:2px solid #FF2442;
+}
+
+.primary-badge{
+    background-color: #3DB2FF;
+    color:#ffffff;
+}
+
+.secondary-badge{
+    background-color: #FF2442;
+    color:#ffffff;
+}
+
+@media only screen and (max-width: 800px)
+{
+    .height-div{
+        height: 8vh;
+    }
+}

@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+<div class="d-flex justify-content-center align-items-center" *ngIf="api.driveLoad" style="height: 90vh;">
+    <div class="spinner-border color-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<div *ngIf="!api.driveLoad">
+    <div class="d-flex justify-content-center align-items-center" *ngIf="api.driveObj.length===0" style="height: 90vh;">
+        <div class="color-primary fw-bold fs-3">No Drives created</div>
+    </div>
+    <div class="row align-items-center gy-2" *ngIf="api.driveObj.length!=0">
+        <div class="col-12 col-md-9" *ngFor="let item of api.driveObj">
+            <div class="card shadow p-3">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="color-primary fs-4 fw-bold"> {{item.drive_Name}}</div>
+                        <div class="text-secondary">{{item.organization_Name}}</div>
+                    </div>
+                    <div class=" col-12 col-md-2">
+                        <div class="text-secondary fw-bold">{{item.address}}, {{item.city}}, {{item.zipcode}}</div>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <div class="fw-bold color-primary text-center">User registered</div>
+                        <div class="fs-5 fw-bold text-secondary text-center">{{item.userId.length}}</div>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <div class="d-flex justify-content-between align-items-start flex-md-column">
+                            <div class="color-primary">{{item.drive_Date}}</div>
+                            <span class="badge bg-primary">{{item.drive_Status}}</span>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <button class="btn my-3 btn-sm primary-outline-btn w-100 w-md-50"
+                            (click)="campDetails(item._id)">View Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

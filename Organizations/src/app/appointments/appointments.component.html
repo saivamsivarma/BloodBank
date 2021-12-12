@@ -1,0 +1,220 @@
+<div class="row align-items-center justify-content-center">
+    <app-navbar></app-navbar>
+    <div class="col-md-5">
+        <div class="text-center fs-1 color-primary fw-bold">Appointment Search</div>
+        <form class="form-group border border-danger rounded-pill p-1 shadow">
+            <input type="text" class="form-control border-0 rounded-pill"
+                placeholder="Search by First Name,Last Name, Contact Number" [(ngModel)]="textSearch"
+                (ngModelChange)="Search()" [ngModelOptions]="{standalone: true}">
+        </form>
+    </div>
+    <div class="col-12 my-3" *ngIf="!api.searchElement">
+        <div class="d-flex justify-content-center align-items-center" *ngIf="api.organizationAppointmentLoad"
+            style="height: 90vh;">
+            <div class="spinner-border color-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div *ngIf="!api.organizationAppointmentLoad">
+            <div class="d-flex justify-content-center align-items-center" *ngIf="api.organizationAppointment.length===0"
+                style="height: 90vh;">
+                <div class="color-primary fw-bold fs-3">No Appointments</div>
+            </div>
+            <div class="row" *ngIf="api.organizationAppointment.length!=0">
+                <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of api.organizationAppointment">
+                    <div class="card shadow p-2">
+                        <div class="row p-2">
+                            <div class="col-3 my-auto text-center">
+                                <img src="../../assets/members.svg" alt="userImage" height="80">
+                            </div>
+                            <div class="col-9 my-auto ">
+                                <div class="row gy-1">
+                                    <div class="offset-3 col-9 offset-md-5 col-md-7">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="badge bg-primary">
+                                                {{item.appointment_reason}}</div>
+                                            <div class="badge bg-primary" *ngIf="item.appointment_Status==='Confirmed'">
+                                                Upcoming</div>
+                                                <div class="badge bg-success"
+                                                *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='Donor'&& item.appointment_reason==='Donation'">
+                                                Donating</div>
+                                            <div class="badge bg-primary"
+                                                *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='newUser'">
+                                                Testing</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="fw-bold fs-md-5">{{item.user_details.firstName}}
+                                                {{item.user_details.lastName}}</div>
+                                            <div class="badge bg-danger rounded"> {{item.user_details.bloodType}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="text-secondary">{{item.appointment_date}}</div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="text-secondary">{{item.time}}</div>
+                                    </div>
+                                    <div class="col-12" *ngIf="item.user_detailsroleType==='Donor'">
+                                        <div class="status color-primary fw-bold">Blood<span
+                                                class="color-secondary">Donor</span></div>
+                                    </div>
+                                    <div class="col-12" *ngIf="item.user_details.roleType==='Member'">
+                                        <div class="status color-primary fw-bold">Mem<span
+                                                class="color-secondary">ber</span></div>
+                                    </div>
+                                    <div class="col-12" *ngIf="item.user_details.roleType==='newUser'">
+                                        <div class="status color-primary fw-bold">new<span
+                                                class="color-secondary">User</span></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between"
+                                    *ngIf="item.appointment_Status==='Confirmed'">
+                                    <button class="btn primary-outline-btn py-1"
+                                        (click)="delete(item._id)">Cancel</button>
+                                    <button class="btn primary-btn py-1"
+                                        (click)="updateAppointment(item._id)">Confirmed</button>
+                                </div>
+                                <div class="d-flex justify-content-between"
+                                    *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='newUser'">
+                                    <button class="btn primary-outline-btn py-1"
+                                        (click)="updateMember(item,'Member')">Make Member</button>
+                                    <button class="btn primary-btn py-1" (click)="updateMember(item,'Donor')">Make
+                                        Donor</button>
+                                </div>
+                                <div class="d-flex justify-content-between"
+                                    *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='Donor'&& item.appointment_reason==='Donation'">
+                                    <button class="btn primary-outline-btn py-1 px-3"
+                                        (click)="getDonationData(item,'Failed')">Cancel</button>
+                                    <button class="btn primary-btn py-1 px-3" (click)="getDonationData(item,'Success')" data-bs-toggle="modal" data-bs-target="#exampleModal">Success</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 my-3" *ngIf="api.searchElement">
+        <div class="d-flex justify-content-center align-items-center" *ngIf="api.searchAppointmentLoad"
+            style="height: 90vh;">
+            <div class="spinner-border color-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div *ngIf="!api.searchAppointmentLoad">
+            <div class="d-flex justify-content-center align-items-center" *ngIf="api.searchAppointmentObj.length===0"
+                style="height: 90vh;">
+                <div class="color-primary fw-bold fs-3">No Results Found</div>
+            </div>
+            <div class="row" *ngIf="api.searchAppointmentObj.length!=0">
+                <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of api.searchAppointmentObj">
+                    <div class="card shadow p-2">
+                        <div class="row p-2">
+                            <div class="col-3 my-auto text-center">
+                                <img src="../../assets/members.svg" alt="userImage" height="80">
+                            </div>
+                            <div class="col-9 my-auto ">
+                                <div class="row gy-1">
+                                    <div class="offset-3 col-9 offset-md-5 col-md-7">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="badge bg-primary">
+                                                {{item.appointment_reason}}</div>
+                                            <div class="badge bg-primary" *ngIf="item.appointment_Status==='Confirmed'">
+                                                Upcoming</div>
+                                                <div class="badge bg-success"
+                                                *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='Donor'&& item.appointment_reason==='Donation'">
+                                                Donating</div>
+                                            <div class="badge bg-primary"
+                                                *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='newUser'">
+                                                Testing</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="fw-bold fs-md-5">{{item.user_details.firstName}}
+                                                {{item.user_details.lastName}}</div>
+                                            <div class="badge bg-danger rounded"> {{item.user_details.bloodType}}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="text-secondary">{{item.appointment_date}}</div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="text-secondary">{{item.time}}</div>
+                                    </div>
+                                    <div class="col-12" *ngIf="item.user_detailsroleType==='Donor'">
+                                        <div class="status color-primary fw-bold">Blood<span
+                                                class="color-secondary">Donor</span></div>
+                                    </div>
+                                    <div class="col-12" *ngIf="item.user_details.roleType==='Member'">
+                                        <div class="status color-primary fw-bold">Mem<span
+                                                class="color-secondary">ber</span></div>
+                                    </div>
+                                    <div class="col-12" *ngIf="item.user_details.roleType==='newUser'">
+                                        <div class="status color-primary fw-bold">new<span
+                                                class="color-secondary">User</span></div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between"
+                                    *ngIf="item.appointment_Status==='Confirmed'">
+                                    <button class="btn primary-outline-btn py-1"
+                                        (click)="delete(item._id)">Cancel</button>
+                                    <button class="btn primary-btn py-1"
+                                        (click)="updateAppointment(item._id)">Confirmed</button>
+                                </div>
+                                <div class="d-flex justify-content-between"
+                                    *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='newUser'">
+                                    <button class="btn primary-outline-btn py-1"
+                                        (click)="updateMember(item,'Member')">Make Member</button>
+                                    <button class="btn primary-btn py-1" (click)="updateMember(item,'Donor')">Make
+                                        Donor</button>
+                                </div>
+                                <div class="d-flex justify-content-between"
+                                    *ngIf="item.appointment_Status==='Verification' && item.user_details.roleType==='Donor'&& item.appointment_reason==='Donation'">
+                                    <button class="btn primary-outline-btn py-1 px-3"
+                                        (click)="getDonationData(item,'Failed')">Cancel</button>
+                                    <button class="btn primary-btn py-1 px-3" (click)="getDonationData(item,'Success')" data-bs-toggle="modal" data-bs-target="#exampleModal">Success</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{Name}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12 col-md-6">
+                    <div class="text-center p-3">
+                        <img src="../../assets/BloodUnits.svg" alt="" class="img-fluid">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="my-3">
+                        <label for="Username">Blood Units Donated By {{Name}}</label>
+                        <input type="number" class="form-control" placeholder="Unit" [(ngModel)]="Unit" [ngModelOptions]="{standalone: true}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn primary-btn" (click)="updateDonor()" data-bs-dismiss="modal">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,142 @@
+<div class="container">
+    <div class="row my-3">
+        <div class="col-12">
+            <div class="float-end">
+                <button class="btn primary-btn shadow" [routerLink]="['/testAppointments']">Make An Appointment</button>
+            </div>
+        </div>
+        <div class="col-12" *ngIf="api.getAppointmentsLoad">
+            <div class="spinner-border color-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+    </div>
+    <div class="row align-items-center gy-3" *ngIf="!api.getAppointmentsLoad">
+        <div class="col-12">
+            <div class="color-primary">Your Upcoming Appointments</div>
+        </div>
+        <div class="col-12" *ngIf="api.getAppointmentsObj.length===0">NO Appointment found.</div>
+        <div class="col-12 col-md-6 col-xl-4" *ngFor="let item of api.getAppointmentsObj">
+            <div class="card shadow p-3">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="fs-4 fw-bold color-primary text-center">
+                            {{item.organization_details.organization_Name}}</div>
+                        <div class="fs-5 color-secondary text-justify">{{item.organization_details.address}}</div>
+                    </div>
+                    <div class="col-5 text-center">
+                        <div class="color-primary">On <span class="color-secondary">{{item.appointment_date}}</span>
+                        </div>
+                    </div>
+                    <div class="col-7 text-center">
+                        <div class="color-primary">Time:<span class="color-secondary">{{item.time}}</span>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-around my-2">
+                        <button class="btn primary-btn px-4">Cancel</button>
+                        <div class="btn primary-outline-btn">Reschedule</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="api.userDetailsObj.familyShare">
+        <div class="col-12" *ngIf="!api.familyMemberLoad">
+            <div class="row my-3" *ngFor="let item of api.familyMemberObj">
+                <div class="col-12">
+                    <div class="color-primary fw-bold">{{item.Member.firstName}}'s Shared data</div>
+                    <div class="card shadow rounded p-2">
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn" (click)="stateChange('Donations')"
+                                [ngClass]="status==='Donations' ? 'active-btn fw-bold' : btn" *ngIf="item.Member.roleType==='Donor'">Donation</button>
+                            <button type="button" class="btn" (click)="stateChange('AppointmentsHistory')"
+                                [ngClass]="status==='AppointmentsHistory' ? 'active-btn fw-bold' : btn">Appointments Histroy</button>
+                                <button type="button" class="btn" (click)="stateChange('Appointments')"
+                                [ngClass]="status==='Appointments' ? 'active-btn fw-bold' : btn">Appointments</button>
+                        </div>
+                        
+                        <div class="table-responsive">
+                            
+                            <table class="table table-borderless" *ngIf="status==='Donations'">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="color-primary">ID</th>
+                                        <th scope="col" class="color-primary">Organizations</th>
+                                        <th scope="col" class="color-primary">Units</th>
+                                        <th scope="col" class="color-primary">Date</th>
+                                        <th scope="col" class="color-primary">Donation Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody *ngIf="item.Donations.length===0">
+                                    <tr style="height: 5vh;">
+                                        <div class="text-center">No Donation Record</div>
+                                    </tr>
+                                </tbody>
+                                <tbody  *ngIf="item.Donations.length!=0">
+                                    
+                                    <tr *ngFor="let j of item.Donations;let i = index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{j.organizationName}}</td>
+                                        <td>{{j.units}}</td>
+                                        <td>{{j.date}}</td>
+                                        <td> <span class="badge bg-success"
+                                                *ngIf="j.status==='Success'">{{j.status}}</span>
+                                            <span class="badge bg-danger" *ngIf="j.status==='Fail'">{{j.status}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-borderless" *ngIf="status==='AppointmentsHistory'">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="color-primary">index</th>
+                                        <th scope="col" class="color-primary">Organizations</th>
+                                        <th scope="col" class="color-primary">Date</th>
+                                        <th scope="col" class="color-primary"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let k of item.AppointmentHistory;let i = index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{k.organizationName}}</td>
+                                        <td>{{k.date}}</td>
+                                        <td><span class="badge bg-primary">{{k.feedback}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table class="table table-borderless" *ngIf="status==='Appointments'">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="color-primary">index</th>
+                                        <th scope="col" class="color-primary">Organizations</th>
+                                        <th scope="col" class="color-primary">Date</th>
+                                        <th scope="col" class="color-primary">Time</th>
+                                        <th scope="col" class="color-primary">Reason</th>
+                                        <th scope="col" class="color-primary"></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody *ngIf="item.Appointments.length===0">
+                                    <tr style="height: 5vh;">
+                                        <div class="text-center">no upcoming Appointments</div>
+                                    </tr>
+                                </tbody>
+                                <tbody *ngIf="item.Appointments.length!=0">
+                                    <tr *ngFor="let item of item.Appointments;let i = index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{item.organization_details.organization_Name}}</td>
+                                        <td>{{item.appointment_date}}</td>
+                                        <td>{{item.time}}</td>
+                                        <td>{{item.appointment_reason}}</td>
+                                        <td><span class="badge bg-primary">{{item.appointment_Status}}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

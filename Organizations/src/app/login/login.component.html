@@ -1,0 +1,30 @@
+<div class="row d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="col-sm-12 col-md-7 col-lg-5 p-3 ">
+        <div class="text-center">
+            <img src="../../assets/logo.svg" alt="" width="280">
+        </div>
+        <div class="fw-bold fs-4 text-center"> SignIn</div>
+        <form class="form-group my-3">
+            <div class="my-3">
+                <label for="Username">Member Email</label>
+                <input type="text" class="form-control" placeholder="Email" [(ngModel)]="Email" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="my-3">
+                <label for="Password">Password</label>
+                <input type="password" class="form-control" placeholder="Password" [(ngModel)]="Password" [ngModelOptions]="{standalone: true}">
+            </div>
+            <div class="my-3">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                    <label class="form-check-label" for="flexCheckDefault">
+                        Remember Me
+                    </label>
+                </div>
+            </div>
+            <div class="my-3">
+                <button class="btn primary-btn w-100 shadow fw-bold" (click)="Login()">SignIn</button>
+            </div>
+            <div class="text-center my-5">New Organization? <span class="color-primary cursor-pointer" [routerLink]="['/SignUp']" routerLinkActive="router-link-active" >create an Organization</span></div>
+        </form>
+    </div>
+</div>

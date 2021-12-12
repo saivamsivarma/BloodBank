@@ -1,0 +1,124 @@
+header {
+    padding: 5px ;
+    background-color: transparent;
+  }
+  
+  .nav__links li{
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: #FF2442;
+    text-decoration: none !important;
+    cursor: pointer;
+  }
+
+  
+  .nav__links {
+    list-style: none;
+    display: flex;
+  }
+  
+  .nav__links li {
+    padding: 0px 20px;
+  }
+  
+  .nav__links li {
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+  }
+
+  .menu {
+  display: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.overlay {
+  height: 100vh;
+  width: 0;
+  position: fixed;
+  z-index: 99;
+  left: 0;
+  top: 0;
+  background-color: #ffffff;
+  overflow-x: hidden;
+  transition: all 0.5s ease 0s;
+  overflow-y: hidden;
+}
+
+.overlay__content {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay li {
+  padding: 15px;
+  font-size: 25px !important;
+  display: block;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  color:#FF2442;
+}
+
+.cta{
+  padding: 9px 25px;
+  background-color: #FF2442;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+  color: #ffffff !important;
+  z-index: 5;
+}
+
+.overlay .close {
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  font-size: 60px;
+  cursor: pointer;
+}
+
+@media only screen and (max-height: 450px) {
+  .overlay a {
+    font-size: 18px !important;
+  }
+  .overlay .close {
+    top: 15px;
+    right: 35px !important;
+  }
+
+}
+
+@media only screen and (max-height: 360px)
+{
+  .overlay a {
+    font-size: 12px !important;
+  }
+}
+
+@media only screen and (max-width: 1024px)
+{
+  .cta
+  {
+    background-color: #FF2442;
+    color:#ffffff !important;
+  }
+}
+@media only screen and (max-width: 990px) {
+  .nav__links,
+  .cta {
+    display: none;
+  }
+  .menu {
+    display: initial;
+  }
+  .overlay .close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    font-size: 60px;
+  }
+}

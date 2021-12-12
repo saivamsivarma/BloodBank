@@ -1,0 +1,27 @@
+<header class="d-flex justify-content-between align-items-center">
+    <a class="logo p-2" routerLink="portfolio"><img src="../../../assets/logo.svg" alt="logo" height="45"></a>
+    <nav>
+        <ul class="nav__links">
+            <li [routerLink]="['/dashboard']" routerLinkActive="router-link-active" >Dashboard</li>
+            <li [routerLink]="['/appointments']" routerLinkActive="router-link-active" *ngIf="api.getMember.role==='Staff'">Appointments</li>
+            <li [routerLink]="['/members']" routerLinkActive="router-link-active" *ngIf="api.getMember.role==='Staff'">Members</li>
+            <li [routerLink]="['/orgMember']" routerLinkActive="router-link-active" *ngIf="api.getMember.role==='Admin'">Organization Members</li>
+            <li [routerLink]="['/drives']" routerLinkActive="router-link-active">Camps</li>
+            <li (click)="Logout()">Logout</li>
+        </ul>
+    </nav>
+        <div class="p-3 menu float-right" (click)="opennav()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 9.932 3.977"><defs><style>.a,.b{fill:none;stroke-linecap:round;}.a{stroke:#9cb5ff;}.b{stroke:#FF2442;}</style></defs><g transform="translate(-55 -73)"><line class="a" x2="1.489" transform="translate(55.5 73.5)"/><line class="a" x1="1.489" transform="translate(62.944 76.477)"/><line class="a" x2="0.744" transform="translate(59.594 74.989)"/><line class="b" x2="2.977" transform="translate(55.5 74.989)"/><line class="b" x2="2.977" transform="translate(61.455 74.989)"/><line class="b" x2="5.955" transform="translate(58.477 73.5)"/><line class="b" x1="5.955" transform="translate(55.5 76.477)"/></g></svg>
+        </div>
+</header>
+<div id="mobile__menu" class="overlay" [style.width]="show === true ? '100%' : '0'">
+    <a class="close float-right"><img  src="/assets/close.svg"  height=25rem width=30.5rem (click)="opennav()"></a>
+    <div class="overlay__content">
+        <li [routerLink]="['/dashboard']" routerLinkActive="router-link-active" (click)="opennav()">Dashboard</li>
+        <li [routerLink]="['/appointments']" routerLinkActive="router-link-active"(click)="opennav()" *ngIf="api.getMember.role==='Staff'">Appointments</li>
+        <li [routerLink]="['/members']" routerLinkActive="router-link-active" (click)="opennav()"*ngIf="api.getMember.role==='Staff'">Members</li>
+        <li [routerLink]="['/orgMember']" routerLinkActive="router-link-active" *ngIf="api.getMember.role==='Admin'">Organization Members</li>
+        <li [routerLink]="['/drives']" routerLinkActive="router-link-active" (click)="opennav()" *ngIf="api.getMember.role==='Admin'">Camps</li>
+        <li (click)="Logout();opennav()">Logout</li>
+    </div>
+</div>

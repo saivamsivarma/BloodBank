@@ -1,0 +1,109 @@
+<div class="row">
+    <div class="col-12 col-md-3 bg-colored height-div"></div>
+    <div class="col-12 col-md-9">
+        <div class="row align-items-md-center" *ngIf="initState==='containsBlood'" style="height: 90vh;">
+            <div class="col-12 col-md-8">
+                <div class="color-primary fw-bold fs-4">BloodType Present In
+                    {{api.organizationDetails.organization_Name}}</div>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"
+                            [(ngModel)]="APOS_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox1">A+</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"
+                            [(ngModel)]="BPOS_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox2">B+</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"
+                            [(ngModel)]="ANEG_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox3">A-</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option4"
+                            [(ngModel)]="BNEG_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox4">B-</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option5"
+                            [(ngModel)]="ONEG_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox5">O-</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox6" value="option6"
+                            [(ngModel)]="OPOS_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox6">O+</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox7" value="option7"
+                            [(ngModel)]="ABPOS_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox7">AB+</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox8" value="option8"
+                            [(ngModel)]="ABNEG_Boolean" [ngModelOptions]="{standalone:true}">
+                        <label class="form-check-label" for="inlineCheckbox8">AB-</label>
+                    </div>
+                </div>
+                <div class="float-end"><button class="btn primary-btn px-5 my-2"
+                        (click)="changeState('BloodBankForm');">Next</button></div>
+            </div>
+        </div>
+        <div class="row align-items-md-center justify-content-md-center" *ngIf="initState==='BloodBankForm'"
+            style="height: 90vh;">
+            <div class="col-12 col-md-6">
+                <div class="text-center">
+                    <img src="../../assets/logo.svg" alt="" height="50">
+                </div>
+                <form class="form-group">
+                    <div class="APOS my-2" *ngIf="APOS_Boolean">
+                        <label class="form-label color-primary fw-bold">A+ Units</label>
+                        <input type="number" class="form-control" placeholder="A+ Units" [(ngModel)]="APOS"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="BPOS my-2" *ngIf="BPOS_Boolean">
+                        <label class="form-label color-primary fw-bold">B+ Units</label>
+                        <input type="number" class="form-control" placeholder="B+ Units" [(ngModel)]="BPOS"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="ANEG my-2" *ngIf="ANEG_Boolean">
+                        <label class="form-label color-primary fw-bold">A- Units</label>
+                        <input type="number" class="form-control" placeholder="A- Units" [(ngModel)]="ANEG"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="BNEG my-2" *ngIf="BNEG_Boolean">
+                        <label class="form-label color-primary fw-bold">B- Units</label>
+                        <input type="number" class="form-control" placeholder="B- Units" [(ngModel)]="BNEG"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="OPOS my-2" *ngIf="OPOS_Boolean">
+                        <label class="form-label color-primary fw-bold">O+ Units</label>
+                        <input type="number" class="form-control" placeholder="O+ Units" [(ngModel)]="OPOS"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="ONEG my-2" *ngIf="ONEG_Boolean">
+                        <label class="form-label color-primary fw-bold">O- Units</label>
+                        <input type="number" class="form-control" placeholder="O- Units" [(ngModel)]="ONEG"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="ABPOS my-2" *ngIf="ABPOS_Boolean">
+                        <label class="form-label color-primary fw-bold">AB+ Units</label>
+                        <input type="number" class="form-control" placeholder="AB+ Units" [(ngModel)]="ABPOS"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="ABNEG my-2" *ngIf="ABNEG_Boolean">
+                        <label class="form-label color-primary fw-bold">AB- Units</label>
+                        <input type="number" class="form-control" placeholder="AB- Units" [(ngModel)]="ABNEG"
+                            [ngModelOptions]="{standalone:true}" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn primary-outline-btn px-5 my-3" (click)="changeState('containsBlood')">Pervious</button>
+                        <button class="btn primary-btn px-5 my-3" (click)="Submit()">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

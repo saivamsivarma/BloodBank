@@ -1,0 +1,136 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-md-3 bg-colored height-div"></div>
+        <div class="col-12 col-md-8 col-lg-6">
+            <div class="row" *ngIf="initState==='Signup'">
+                <div class="col-12 col-lg-9 px-5 px-3">
+                    <div class="fs-1 color-primary fw-bold">Create Your Account</div>
+                    <form class="form-group my-3 my-md-1 my-lg-3">
+                        <div class="my-3 my-md-1 my-lg-3">
+                            <label for="FirstName" class="form-label fw-bold fw-bold">First Name</label>
+                            <input type="text" class="form-control" placeholder="First Name" [(ngModel)]="FirstName"
+                                [ngModelOptions]="{standalone: true}" required>
+                        </div>
+                        <div class="my-3 my-md-1 my-lg-3">
+                            <label for="LastName" class="form-label fw-bold">Last Name</label>
+                            <input type="text" class="form-control" placeholder="Last Name" [(ngModel)]="LastName"
+                                [ngModelOptions]="{standalone : true}" required>
+                        </div>
+                        <div class="my-3 my-md-1 my-lg-3">
+                            <label for="Email ID" class="form-label fw-bold">Email ID</label>
+                            <input type="email" class="form-control" placeholder="Email ID" [(ngModel)]="Email"
+                                [ngModelOptions]="{standalone : true}" required>
+                        </div>
+                        <div class="my-3 my-md-1 my-lg-3">
+                            <label for="Password" class="form-label fw-bold">Password</label>
+                            <input type="password" class="form-control" placeholder="Password" [(ngModel)]="password"
+                                [ngModelOptions]="{standalone:true}" required>
+                        </div>
+                        <div class="my-3 my-md-1 my-lg-3">
+                            <label for="Password" class="form-label fw-bold">Confirm Password</label>
+                            <input type="password" class="form-control" placeholder="Confirm Password"
+                                [(ngModel)]="confirmPassword" [ngModelOptions]="{standalone:true}" required>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"
+                                [(ngModel)]="privacyCheck" [ngModelOptions]="{standalone:true}">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                I accept the Privacy Policy and the Terms of Service
+                            </label>
+                        </div>
+                        <button class="btn primary-btn w-100 my-2" (click)="changeState('Age')"
+                            [disabled]="privacyCheck===false">Sign Up</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="initState==='Age'">
+                <div class="col-12">
+                    <div class="fw-bold fs-1 color-primary">What is your age?</div>
+                    <input type="number" class="form-control" placeholder="Age" [(ngModel)]="Age"
+                        [ngModelOptions]="{standalone:true}" required>
+                    <button class="btn primary-btn my-3 px-5 float-end" (click)="changeState('BloodType')">Next</button>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="initState==='BloodType'">
+                <div class="col-12">
+                    <div class="fw-bold fs-1 color-primary">
+                        Your Blood Type
+                    </div>
+                </div>
+                <div class="col-3 my-3" *ngFor="let i of bloodGroup">
+                    <div class="card shadow fs-6 fs-md-4 fw-bold color-primary p-2 text-center"
+                        (click)="clickBlood(i.value)">
+                        {{i.value}}</div>
+                </div>
+                <div class="d-flex justify-content-between my-3">
+                    <button class="btn primary-outline-btn px-5" (click)="changeState('Age')">Pervious</button>
+                    <button class="btn primary-btn px-5" (click)="changeState('Gender')">Next</button>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="initState==='Gender'">
+                <div class="col-12">
+                    <div class="fw-bold fs-1 color-primary">
+                        Your Gender
+                    </div>
+                </div>
+                <div class="col-3 my-3" *ngFor="let i of GenderGroup">
+                    <div class="card shadow fs-6 fs-md-4 fw-bold color-primary p-2 text-center"
+                        (click)="clickGender(i.Name)">
+                        {{i.Name}}</div>
+                </div>
+                <div class="d-flex justify-content-between my-3">
+                    <button class="btn primary-outline-btn px-5" (click)="changeState('BloodType')">Pervious</button>
+                    <button class="btn primary-btn px-5" (click)="changeState('Contact')">Next</button>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="initState==='Contact'">
+                <div class="col-12">
+                    <div class="fw-bold fs-1 color-primary">
+                        Contact Details
+                    </div>
+                    <input type="tel" class="form-control" placeholder="Contact" [(ngModel)]="Phone_number"
+                        [ngModelOptions]="{standalone:true}" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                        maxlength="10">
+                </div>
+                <div class="d-flex justify-content-between my-3">
+                    <button class="btn primary-outline-btn px-5" (click)="changeState('Gender')">Pervious</button>
+                    <button class="btn primary-btn px-5" (click)="changeState('Address')">Next</button>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="initState==='Address'">
+                <div class="col-12">
+                    <div class="fw-bold fs-1 color-primary">
+                        Your Location
+                    </div>
+                </div>
+                <div class="my-3 my-md-1 my-lg-3 col-6">
+                    <label for="City" class="form-label">City</label>
+                    <input type="text" class="form-control" placeholder="City" [(ngModel)]="City"
+                        [ngModelOptions]="{standalone:true}" required>
+                </div>
+                <div class="col-6 my-3 my-md-1 my-lg-3">
+                    <label for="City" class="form-label">Zipcode</label>
+                    <input type="number" class="form-control" placeholder="Zipcode" [(ngModel)]="Zipcode"
+                        [ngModelOptions]="{standalone:true}" required>
+                </div>
+                <div class="col-12 my-3 my-md-1 my-lg-3">
+                    <label for="State" class="form-label">State</label>
+                    <select class="form-select" [(ngModel)]="State" [ngModelOptions]="{standalone:true}" required>
+                        <option selected>Select State</option>
+                        <option *ngFor="let i of stateOptions">{{i.Name}}</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between my-3">
+                    <button class="btn primary-outline-btn px-5" (click)="changeState('Contact')">Pervious</button>
+                    <button class="btn primary-btn px-5" (click)="signUp()">Submit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

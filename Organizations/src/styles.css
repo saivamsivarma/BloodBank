@@ -1,0 +1,48 @@
+/* You can add global styles to this file, and also import other style files */
+.primary-btn,.primary-btn:hover{
+    background-color: #FF2442;
+    color:#ffffff;
+}
+.primary-bg{
+    background-color: #FF2442;
+}
+.secondary-bg{
+    background-color: #60bfff42;
+    border:2px dashed#3DB2FF;
+}
+.nav-link{
+    color: #FF2442 !important;
+}
+.nav-link:hover{
+    color: #FF2442;
+    cursor: pointer;
+}
+.color-primary{
+    color:#FF2442;
+}
+
+.color-secondary{
+    color:#3DB2FF;
+}
+
+.primary-outline-btn{
+    color:#FF2442 !important;
+    border: 1px solid #FF2442;
+}
+
+.primary-outline-btn:hover{
+    color:#ffffff !important;
+    background-color: #FF2442;
+}
+
+.dropdown-menu{
+    border: 2px solid #FF2442;
+}
+
+.dropdown-item{
+    cursor: pointer;
+}
+
+.custom-bg{
+    background-color: #FF2442;
+}

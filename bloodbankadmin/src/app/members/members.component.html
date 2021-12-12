@@ -1,0 +1,141 @@
+<app-navbar></app-navbar>
+<div class="d-flex justify-content-center align-items-center" *ngIf="api.userLoadingState" style="height: 90vh;">
+    <div class="spinner-border color-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<div *ngIf="!api.userLoadingState">
+    <div class="d-flex justify-content-center align-items-center" *ngIf="api.users.length===0" style="height: 90vh;">
+        <div class="color-primary fw-bold fs-3">No Registered Users</div>
+    </div>
+    <div class="row gy-3 align-items-center" *ngIf="api.users.length !=0">
+        <div class="col-12 col-md-6 col-lg-5 col-xl-4" *ngFor="let item of api.users">
+            <div class="card shadow p-2">
+                <div class="row p-2">
+                    <div class="col-3 my-auto text-center">
+                        <img src="../../assets/User.svg" alt="userImage" height="80">
+                    </div>
+                    <div class="col-9 my-auto ">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="fw-bold fs-md-5">{{item.userDetails.firstName}} {{item.userDetails.lastName}}</div>
+                                    <div class="badge bg-danger rounded"> {{item.userDetails.bloodType}}</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-secondary">{{item.userDetails.age}}</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-secondary">{{item.userDetails.gender}}</div>
+                            </div>
+                            <div class="col-4">
+                                <div class="text-secondary">{{item.userDetails.state}}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="status color-primary fw-bold" *ngIf="item.userDetails.roleType==='Donor'">Blood<span
+                                    class="color-secondary">Donor</span></div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn primary-outline-btn w-100 w-md-50" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" (click)="getDetails(item.userDetails)">View</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Modal-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="header d-flex justify-content-between px-3 py-2">
+                <h5 class="modal-title color-primary" id="exampleModalLabel">{{firstName}} Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3">
+                        <img src="../../assets/User.svg" alt="user-img" class="rounded-pill" height="85" width="85">
+                    </div>
+                    <div class="col-9">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="fw-bold fs-md-5">{{firstName}} {{lastName}}</div>
+                            <div class="badge bg-danger rounded"> {{BloodType}}</div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="text-secondary">Age: {{Age}}</div>
+                            <div class="text-secondary">{{Gender}}</div>
+                            <div class="text-secondary">{{State}}</div>
+                        </div>
+                        <div class="status color-secondary fw-bold" *ngIf="RoleType==='newUser'">New User</div>
+                        <div class="status color-primary fw-bold" *ngIf="RoleType==='Donor'">Blood<span
+                                class="color-secondary">Donor</span></div>
+                        <div class="status color-primary fw-bold" *ngIf="RoleType==='Member'">Member</div>
+                    </div>
+                    <div class="col-4 offset-2">
+                        <div class="card shadow-sm border-0 p-2 text-center">
+                            <img src="../../../assets/Star.svg" alt="" height="20">
+                            <div class="fw-bold fs-5">4</div>
+                            <div class="text-secondary">Donation</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card shadow-sm border-0 p-2 text-center">
+                            <img src="../../../assets/Life.svg" alt="" height="20">
+                            <div class="fw-bold fs-5">5</div>
+                            <div class="text-secondary">Lifes Saved.</div>
+                        </div>
+                    </div>
+                    <div class="col-4 mt-3">
+                        <div class="color-primary">Contact</div>
+                        <div class="fw-6">{{Contact}}</div>
+                    </div>
+                    <div class="col-8 mt-3">
+                        <div class="color-primary">Email</div>
+                        <div class="fw-6">{{Email}}</div>
+                    </div>
+                    <div class="col-3 mt-3">
+                        <div class="color-primary">City</div>
+                        <div class="fw-6">{{City}}</div>
+                    </div>
+                    <div class="col-3 mt-3">
+                        <div class="color-primary">Zipcode</div>
+                        <div class="fw-6">{{Zipcode}}</div>
+                    </div>
+                    <div class="col-12" *ngIf="!api.getMemberfamilyLoad">
+                        <div class="mt-2 fw-bold color-primary">Family <span class="color-secondary">Members</span>
+                        </div>
+                        <div class="text-center color-primary fw-bold my-5" *ngIf="api.getMemberfamilyObj.length===0">No
+                            Family Member</div>
+                        <div class="row my-2" *ngIf="api.getMemberfamilyObj.length!=0">
+                            <div class="col-12" *ngFor="let item of api.getMemberfamilyObj">
+                                <div class="card shadow p-2">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <img src="../../assets/User.svg" alt="" height="50" width="50">
+                                        </div>
+                                        <div class="col-10">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="color-primary fw-bold">{{item.firstName}} {{item.lastName}}
+                                                </div>
+                                                <div class="badge bg-primary">{{item.roleType}}</div>
+                                            </div>
+                                            <div class="text-secondary">{{item.phone_number}}</div>
+                                            <div class="text-secondary">{{item.email}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

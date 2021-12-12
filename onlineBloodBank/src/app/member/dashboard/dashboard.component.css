@@ -1,0 +1,19 @@
+.custom-bg {
+    background-color: #fc8ea6;
+  }
+
+  .bg-custom{
+    background-color: #ff2442;
+  }
+
+  .img-custom{
+    height: 250px;
+  }
+
+
+  @media only screen and (max-width: 800px)
+{
+    .img-custom{
+        height: 200px;
+    }
+}

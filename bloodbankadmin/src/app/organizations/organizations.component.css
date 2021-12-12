@@ -1,0 +1,19 @@
+.img-custom{
+    height: 75px !important;
+    width: 75px !important;
+}
+
+.btn-group .btn {
+    color: #6d7278;
+    letter-spacing: 0.4px;
+    line-height: 19px;
+    padding: 8px 24px;
+  }
+
+  .btn-group .active-btn {
+    border-radius: 0;
+    border-bottom: 1px solid #FF2442;
+    color: #FF2442;
+    letter-spacing: 0.4px;
+    line-height: 19px;
+  }

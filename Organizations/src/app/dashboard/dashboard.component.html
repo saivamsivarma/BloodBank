@@ -1,0 +1,119 @@
+<div *ngIf="api.Status==='Pending'">
+    <div class="row align-items-center my-2" style="height:90vh">
+        <div class="col-12">
+            <button class="btn primary-outline-btn shadow float-end " (click)="Logout()">Logout</button>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="text-center text-md-start">
+                <div class="d-md-flex align-items-center">
+                    <div class="fw-bold fs-2 color-primary">Welcome to</div><img src="../../../assets/logo.svg"
+                        alt="logo" height="45">
+                </div>
+                <div class="card shadow p-3 my-3">
+                    <div class="row align-items-center">
+                        <div class="col-12 col-lg-2">
+                            <img src="../../../assets/members.svg" alt="" height="55">
+                        </div>
+                        <div class="col-12 col-lg-10">
+                            <div class="fs-4 fw-bold color-primary">{{api.getMember.member_Name}}</div>
+                            <span class="text-secondary">{{api.getMember.contact}}</span>
+                            <div class="d-flex justify-content-between">
+                                <span class="badge custom-bg">{{api.getMember.role}}</span>
+                                <span class="badge bg-primary">Organization Verification: Pending</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-8 text-center">
+            <img src="../../assets/organization.svg" alt="" class="org-img">
+            <div class="fs-2 fw-bold color-primary">{{api.organizationDetails.organization_Name}} profile is under
+                review</div>
+            <div class="text-center"><button class="btn primary-btn" [routerLink]="['/bloodbank']">Add Blood
+                    Bank</button></div>
+                    
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-center" *ngIf="api.Status==='Completed'">
+    <app-navbar></app-navbar>
+    <div class="col-12 col-md-6 col-lg-8" >
+        <div class="fs-1 fw-bold text-center">Welcome to <span
+                class="color-primary">{{api.organizationDetails.organization_Name}}</span> Online Blood
+            Bank<span class="color-primary">.</span></div>
+            <div class="text-center" *ngIf="api.getBloodbankLoad">Fetching Blood Bank Details</div>
+        <ngx-charts-pie-chart id="line-chart-parent" class="d-none d-lg-block" [view]=[800,450]
+            [results]="api.getBloodBankObj.blood" [doughnut]=false [labels]=true [animations]=true [legend]=true
+            [legendPosition]="postion" [legendTitle]="api.organizationDetails.organization_Name" *ngIf="!api.getBloodbankLoad"></ngx-charts-pie-chart>
+
+        <ngx-charts-pie-chart id="line-chart-parent" class="d-block d-lg-none" [view]=[350,350]
+            [results]="api.getBloodBankObj.blood" [doughnut]=false [labels]=true [animations]=true [legend]=true
+            [legendPosition]="postion" [legendTitle]="api.organizationDetails.organization_Name" *ngIf="!api.getBloodbankLoad"></ngx-charts-pie-chart>
+    </div>
+
+    <div class="col-12 col-md-6 col-lg-4">
+        <div class="row" *ngIf="api.getMember.role==='Admin'">
+            <div class="col-12">
+                <div class="float-end">
+                    <button class="btn primary-outline-btn fw-bold my-2 shadow" [routerLink]="['/organization']">Request Organizations</button>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card shadow p-2 my-2">
+                    <div class="d-flex align-items-center justify-content-around p-2">
+                        <img src="../../assets/staff.svg" alt="staff" height="180">
+                        <div>
+                            <div class="fw-bold">Staff</div>
+                            <div class="fw-bold fs-5 color-primary">{{api.getOrgMemberObj.length-1}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card shadow p-2 my-2">
+                    <div class="d-flex align-items-center justify-content-around">
+                        <img src="../../assets/drives.svg" alt="drives" height="180">
+                        <div>
+                            <div class="fw-bold">Blood Camps</div>
+                            <div class="fw-bold fs-5 color-primary">{{api.getOrgDriveObj.length}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" *ngIf="api.getMember.role==='Staff'">
+            <div class="col-12">
+                <div class="card shadow p-2 my-2">
+                    <div class="d-flex align-items-center justify-content-around p-2">
+                        <img src="../../assets/Appointment.svg" alt="staff" height="180">
+                        <div>
+                            <div class="fw-bold">Appointment</div>
+                            <div class="fw-bold fs-5 color-primary">{{api.organizationAppointment.length}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="card shadow p-2 my-2">
+                    <div class="d-flex align-items-center justify-content-around">
+                        <img src="../../assets/drives.svg" alt="drives" height="180">
+                        <div>
+                            <div class="fw-bold">Blood Camps</div>
+                            <div class="fw-bold fs-5 color-primary">{{api.getOrgDriveObj.length}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4" >
+                <div class="d-flex justify-content-between align-items-start flex-md-column">
+                    <div class="color-primary fw-bold my-2" [routerLink]="['/members']" routerLinkActive="router-link-active" >Request Donors</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>

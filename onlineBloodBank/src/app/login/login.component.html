@@ -1,0 +1,47 @@
+<div class="container-fluid">
+    <div class="row align-items-center height-max">
+        <div class="col-12 col-md-6 col-lg-4 px-3">
+            <div class="text-center"> <img src="../../../assets/logo.svg" alt="" height="35px"> <div class="fs-2">Login to your <span class="color-primary">Account</span> </div></div>
+            <div class="login-button my-3 my-md-4">
+                <button class="btn btn-change shadow w-100 shadow primary-outline-btn" (click)="signInWithGoogle()">Login With <span><img
+                            src="../../assets/G.svg" width="25"></span></button>
+            </div>
+            <p class="or"><span class="color-primary">or</span></p>
+            <form class="form-group">
+                <div class="my-3">
+                    <label for="login" class="form-label">Email ID</label>
+                    <input type="email" class="form-control border-color" placeholder="Email ID" [(ngModel)]="email" [ngModelOptions]="{standalone: true}"/>
+                </div>
+                <div class="my-3">
+                    <label for="login" class="form-label">Password</label>
+                    <input type="password" class="form-control" placeholder="Password" [(ngModel)]="password" [ngModelOptions]="{standalone:true}"/>
+                </div>
+                <div class="my-3">
+                    <div class="d-flex justify-content-between">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Remember Me
+                            </label>
+                        </div>
+                        <div> Forgot Password?</div>
+                    </div>
+                </div>
+                <div class="my-3">
+                    <button class="btn primary-btn w-100 shadow" type="button" disabled *ngIf="api.memberLoginLoad">
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                      </button>
+                    <button class="btn primary-btn w-100 shadow" (click)="login()" *ngIf="!api.memberLoginLoad">Login</button>
+                </div>
+            </form>
+            <div class="text-center">New User? <span class="color-primary" [routerLink]="['/signup']">SignUp</span></div>
+        </div>
+        <div class="col-md-6 col-lg-8 bg-colored d-none d-md-block" style="height:100vh">
+            <div class="text-center my-5">
+                <img src="../../assets/Blood donation.svg" alt="" class="img-fluid my-4">
+            </div>
+            <div class="text-center text-white fs-1">Give Blood<span class="typed-element"></span></div>
+        </div>
+    </div>
+</div>

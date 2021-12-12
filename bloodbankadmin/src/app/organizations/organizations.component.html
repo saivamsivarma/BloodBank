@@ -1,0 +1,81 @@
+<app-navbar></app-navbar>
+<div class="d-flex justify-content-center align-items-center" *ngIf="api.organizationLoad" style="height: 90vh;">
+    <div class="spinner-border color-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+<div *ngIf="!api.organizationLoad">
+    <div class="d-flex justify-content-center align-items-center" *ngIf="api.organizations.length===0"
+        style="height: 90vh;">
+        <div class="color-primary fw-bold fs-3">No Registered Organizations</div>
+    </div>
+    <div class="row gy-2" *ngIf="api.organizations.length!=0">
+        <div class="col-12">
+            <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn" (click)="stateChange('All')"
+                    [ngClass]="viewState==='All' ? 'active-btn fw-bold' : btn">All Organizations</button>
+                <button type="button" class="btn" (click)="stateChange('Pending')"
+                    [ngClass]="viewState==='Pending' ? 'active-btn fw-bold' : btn">Pending Organizations</button>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="row gy-3" *ngIf="viewState==='Pending'">
+                <div class="col-12 col-md-4" *ngFor="let i of api.pendingOrgObj">
+                    <div class="card shadow p-3">
+                        <div class="row align-items-center">
+                            <div class="col-4 text-center">
+                                <img src="../../assets/organization.svg" alt="img" height="120" width="100">
+                            </div>
+                            <div class="col-8">
+                                <div class="color-secondary fw-bold fs-5">{{i.organization_Name}}</div>
+                                <div class="color-primary">{{i.address}}</div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-secondary">{{i.city}}</div>
+                                    <div class="text-secondary">{{i.state}}</div>
+                                    <div class="text-secondary">{{i.zipcode}}</div>
+                                </div>
+                                <div class="badge bg-primary" *ngIf="i.status==='Completed'">Verified</div>
+                                <div class="badge bg-danger" *ngIf="i.status==='Pending'">Not Verified</div>
+                            </div>
+                            <div class="col-12" *ngIf="i.status==='Pending'">
+                                <button class="btn primary-btn px-4 float-end" (click)="Accept(i)">
+                                    Accept
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row gy-3" *ngIf="viewState==='All'">
+                <div class="col-12 col-md-4" *ngFor="let i of api.organizations">
+                    <div class="card shadow p-3">
+                        <div class="row align-items-center">
+                            <div class="col-4 text-center">
+                                <img src="../../assets/organization.svg" alt="img" height="120" width="100">
+                            </div>
+                            <div class="col-8">
+                                <div class="color-secondary fw-bold fs-5">{{i.organization_Name}}</div>
+                                <div class="color-primary">{{i.address}}</div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-secondary">{{i.city}}</div>
+                                    <div class="text-secondary">{{i.state}}</div>
+                                    <div class="text-secondary">{{i.zipcode}}</div>
+                                </div>
+                                <div class="badge bg-primary" *ngIf="i.status==='Completed'">Verified</div>
+                                <div class="badge bg-danger" *ngIf="i.status==='Pending'">Not Verified</div>
+                            </div>
+                            <div class="col-12" *ngIf="i.status==='Pending'">
+                                <button class="btn primary-btn px-4 float-end" (click)="Accept(i)">
+                                    Accept
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="btn primary-btn px-5 my-5" [routerLink]="['/dashboard']">Back</div>
+
+
+<div class="row">
+    <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of api.getOrganizationObj">
+        <div class="card shadow p-3 my-3">
+            <div class="">
+                <span class="badge bg-primary float-end" *ngIf="item.status==='Completed'">Verified</span>
+                <span class="badge bg-danger float-end" *ngIf="item.status==='Pending'">Not Verified</span>
+            </div>
+            <div class="fs-4 fw-bold color-primary text-justify">{{item.organization_Name}}</div>
+            <div class="fs-5 color-secondary">{{item.address}}, {{item.city}}, {{item.state}}, {{item.zipcode}}</div>
+            <div class="d-flex justify-content-between">
+                <div class="fw-5 text-secondary">{{item.contactNumber}}</div>
+                <div class="fw-5 text-secondary"></div>
+                <div class="fw-5 text-secondary">{{item.email}}</div>
+            </div>
+            <button type="button" class="btn primary-outline-btn w-100 my-3" (click)="sendRequest(item._id)">
+                Request
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,278 @@
+<div class="container">
+    <div class="d-flex justify-content-center align-items-center" *ngIf="api.userDetailsLoad" style="height: 85vh;">
+        <div class="spinner-border color-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="row gy-3" *ngIf="!api.userDetailsLoad">
+        <div class="col-12 col-md-6">
+            <div class="row align-items-center gy-3">
+                <div class="col-3 text-center">
+                    <img src="../../../assets/Userpic.svg" alt="" height="100" width="100">
+                </div>
+                <div class="col-9">
+                    <div class="user-name fw-bold fs-5">{{api.userDetailsObj.firstName}} {{api.userDetailsObj.lastName}}
+                    </div>
+                    <div class="">Eligibility : <span class="badge primary-badge"
+                            *ngIf="api.Role==='Donor'">Approved</span>
+                            <span class="badge bg-danger"
+                            *ngIf="api.Role==='Member'">Member</span></div>
+                </div>
+                <div class="col-6 col-md-3 offset-md-1" *ngIf="api.Role==='Donor'">
+                    <div class="card shadow-sm border-0 p-2 text-center">
+                        <img src="../../../assets/Star.svg" alt="" height="50">
+                        <div class="fw-bold fs-5">{{api.getDonationHistoryObj.length}}</div>
+                        <div class="text-secondary">Donation</div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3" *ngIf="api.Role==='Donor'">
+                    <div class="card shadow-sm border-0 p-2 text-center">
+                        <img src="../../../assets/Life.svg" alt="" height="50">
+                        <div class="fw-bold fs-5" *ngIf="api.getDonationHistoryObj.length!=0">
+                            {{api.getDonationHistoryObj.length+2}}</div>
+                        <div class="text-secondary">Lifes Saved.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-5 offset-md-1">
+            <div class="card shadow p-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <img src="../../../assets/DonorId.svg" alt="" width="200" *ngIf="api.Role==='Donor'">
+                    <img src="../../../assets/memberId.svg" alt="" width="200" *ngIf="api.Role==='Member'">
+                </div>
+                <!--Username and blood type-->
+                <div class="d-flex justify-content-between align-items-center my-2">
+                    <div class="w-75">
+                        <div class="fw-bold color-secondary fs-4"> {{api.userDetailsObj.firstName}}
+                            {{api.userDetailsObj.lastName}}</div>
+                        <div class="color-secondary fw-bold fs-6">Blood Type: <span
+                                class="color-primary">{{api.userDetailsObj.bloodType}}</span>
+                        </div>
+                    </div>
+                    <qrcode [qrdata]="api.userDetailsObj._id" [width]="120" [errorCorrectionLevel]="'high'"
+                        [colorDark]="'#ff2442'"></qrcode>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center my-3">
+                <button class="btn rounded color-primary">Download Id</button>
+
+                <button class="btn rounded color-primary">Scan Donor Id</button>
+
+                <button class="btn rounded color-primary">Mail Donor Id</button>
+            </div>
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="fw-bold">History</div>
+            <div class="card shadow rounded p-2">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button type="button" class="btn" (click)="stateChange('Donations')"
+                        [ngClass]="status==='Donations' ? 'active-btn fw-bold' : btn" *ngIf="api.Role==='Donor'">Donation</button>
+                    <button type="button" class="btn" (click)="stateChange('Appointments')"
+                        [ngClass]="status==='Appointments' ? 'active-btn fw-bold' : btn">Appointments</button>
+                        <button type="button" class="btn" (click)="stateChange('Camps')"
+                        [ngClass]="status==='Camps' ? 'active-btn fw-bold' : btn">Camps</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-borderless" *ngIf="status==='Donations'">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="color-primary">ID</th>
+                                <th scope="col" class="color-primary">Organizations</th>
+                                <th scope="col" class="color-primary">Units</th>
+                                <th scope="col" class="color-primary">Date</th>
+                                <th scope="col" class="color-primary">Donation Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of api.getDonationHistoryObj;let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{item.organizationName}}</td>
+                                <td>{{item.units}}</td>
+                                <td>{{item.date}}</td>
+                                <td> <span class="badge bg-success"
+                                        *ngIf="item.status==='Success'">{{item.status}}</span>
+                                    <span class="badge bg-danger" *ngIf="item.status==='Fail'">{{item.status}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-borderless" *ngIf="status==='Appointments'">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="color-primary">ID</th>
+                                <th scope="col" class="color-primary">Organizations</th>
+                                <th scope="col" class="color-primary">Date</th>
+                                <th scope="col" class="color-primary"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of api.getAppointmentHistoryObj;let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{item.organizationName}}</td>
+                                <td>{{item.date}}</td>
+                                <td><span class="badge bg-primary">{{item.feedback}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-borderless" *ngIf="status==='Camps'">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="color-primary">Camp Name</th>
+                                <th scope="col" class="color-primary">Organizated By</th>
+                                <th scope="col" class="color-primary">Date</th>
+                                <th scope="col" class="color-primary"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of api.userCampObj;let i = index">
+                                <td>{{item.drive_Name}}</td>
+                                <td>{{item.organization_Name}}</td>
+                                <td>{{item.drive_Date}}</td>
+                                <td><span class="badge bg-primary">{{item.drive_Status}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="row gy-2">
+                <div class="col-12">
+                    <div class="fw-bold color-primary fs-4 text-center">Family Member</div>
+                </div>
+                <div class="col-12">
+                    <div class="float-end"> <button class=" btn primary-btn" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">Add family Member</button></div>
+                </div>
+            </div>
+            <div class="card shadow p-2 mt-2">
+                <div class="row align-items-center" *ngFor="let item of api.familyMemberObj">
+                    <div class="col-2">
+                        <img src="../../../assets/user.svg" alt="">
+                    </div>
+                    <div class="col-10">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="color-primary fw-bold">{{item.firstName}} {{item.lastName}}</div>
+                            <div class="badge bg-primary">{{item.roleType}}</div>
+                        </div>
+                        <div class="d-xl-flex justify-content-between">
+                            <div class="text-secondary">{{item.phone_number}}</div>
+                            <div class="text-secondary">{{item.email}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-primary" id="exampleModalLabel">Add Family Member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form-group border border-danger rounded-pill p-1 shadow">
+                    <input type="text" class="form-control border-0 rounded-pill"
+                        placeholder="Search by First Name,Last Name, Contact Number" [(ngModel)]="textSearch"
+                        (ngModelChange)="userSearch()" [ngModelOptions]="{standalone: true}">
+                </form>
+                <div class="col-12 my-3" *ngIf="!api.userSearchElement">
+                    <div class="d-flex justify-content-center align-items-center" *ngIf="api.getUsersLoad"
+                        style="height: 50vh;">
+                        <div class="spinner-border color-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!api.getUsersLoad && !api.userSearchElement">
+                        <div class="d-flex justify-content-center align-items-center" *ngIf="api.getUsersObj.length===0"
+                            style="height: 50vh;">
+                            <div class="color-primary fw-bold fs-3">No Members</div>
+                        </div>
+                        <div *ngIf="api.getUsersObj.length!=0">
+                            <div class="row" *ngFor="let i of api.getUsersObj">
+                                <div class="col-12">
+                                    <div class="card shadow p-2 my-3">
+                                        <div class="row p-2">
+                                            <div class="col-3">
+                                                <img src="../../assets/user.svg" alt="user-img" class="rounded-pill" height="85"
+                                                    width="85">
+                                            </div>
+                                            <div class="col-9 my-auto">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="fw-bold fs-md-5">{{i.firstName}} {{i.lastName}}</div>
+                                                    <div class="badge bg-danger rounded"> {{i.bloodType}}</div>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <div class="text-secondary">Age: {{i.age}}</div>
+                                                    <div class="texbt-secondary">{{i.gender}}</div>
+                                                    <div class="text-secondary">{{i.state}}</div>
+                                                </div>
+                                                <div class="status color-secondary fw-bold" *ngIf="i.roleType==='newUser'">New
+                                                    User</div>
+                                                <div class="status color-primary fw-bold" *ngIf="i.roleType==='Donor'">
+                                                    Blood<span class="color-secondary">Donor</span></div>
+                                                <div class="status color-primary fw-bold" *ngIf="i.roleType==='Member'">Member
+                                                </div>
+                                                <div class="btn primary-btn" (click)="add(i._id)">Add Member</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 my-3" *ngIf="api.userSearchElement">
+                    <div class="d-flex justify-content-center align-items-center" *ngIf="api.userSearchLoad"
+                        style="height: 50vh;">
+                        <div class="spinner-border color-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!api.userSearchLoad">
+                        <div class="d-flex justify-content-center align-items-center"
+                            *ngIf="api.userSearchObj.length===0" style="height: 30vh;">
+                            <div class="color-primary fw-bold fs-3">No Results Found</div>
+                        </div>
+                        <div class="row" *ngIf="api.userSearchObj.length!=0">
+                            <div class="col-12" *ngFor="let i of api.userSearchObj">
+                                <div class="card shadow p-2" *ngIf="i._id!=api.userDetailsObj._id">
+                                    <div class="row p-2">
+                                        <div class="col-3">
+                                            <img src="../../assets/user.svg" alt="user-img" class="rounded-pill" height="85"
+                                                width="85">
+                                        </div>
+                                        <div class="col-9 my-auto">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div class="fw-bold fs-md-5">{{i.firstName}} {{i.lastName}}</div>
+                                                <div class="badge bg-danger rounded"> {{i.bloodType}}</div>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class="text-secondary">Age: {{i.age}}</div>
+                                                <div class="texbt-secondary">{{i.gender}}</div>
+                                                <div class="text-secondary">{{i.state}}</div>
+                                            </div>
+                                            <div class="status color-secondary fw-bold" *ngIf="i.roleType==='newUser'">New
+                                                User</div>
+                                            <div class="status color-primary fw-bold" *ngIf="i.roleType==='Donor'">
+                                                Blood<span class="color-secondary">Donor</span></div>
+                                            <div class="status color-primary fw-bold" *ngIf="i.roleType==='Member'">Member
+                                            </div>
+                                            <div class="btn primary-btn" (click)="add(i._id)">Add Member</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>

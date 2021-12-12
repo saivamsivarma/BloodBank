@@ -1,0 +1,103 @@
+<div class="row">
+    <app-navbar></app-navbar>
+    <div class="d-flex justify-content-center align-items-center" *ngIf="api.getOrgMemberLoad" style="height: 90vh;">
+        <div class="spinner-border color-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div *ngIf="!api.getOrgMemberLoad">
+        <div class="row justify-content-center align-items-center" *ngIf="api.getOrgMemberObj.length===1">
+
+            <img src="../../assets/staff.svg" alt="" height="280" width="50" class="mt-5">
+            <div class="color-primary fw-bold fs-3 text-center">Add Members to Organization</div>
+            <div class="text-center">
+                <button type="button" class="btn primary-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add Member
+                </button>
+            </div>
+        </div>
+        <div class="row gy-3" *ngIf="api.getOrgMemberObj.length>=1">
+            <div class="col-12">
+                <button type="button" class="btn primary-btn float-end" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal">
+                    Add Member
+                </button>
+            </div>
+            <div class="col-12">
+                <div class="row" >
+                    <div class="col-12 col-md-3" *ngFor="let item of api.getOrgMemberObj">
+                        <div class="card shadow p-2"  *ngIf="item._id!=api.getMember._id">
+                            <div class="row p-2 gx-5">
+                                <div class="col-12">
+                                    <span class="badge custom-bg float-end">{{item.role}}</span>
+                                </div>
+                                <div class="col-3 my-auto text-center">
+                                    <img src="../../assets/members.svg" alt="userImage" height="80">
+                                </div>
+                                <div class="col-9 my-auto ">
+
+                                    <div class="fw-bold fs-md-5 color-primary">{{item.member_Name}}</div>
+                                    <div class="text-secondary">{{item.email}}</div>
+
+                                    <div class="col-12">
+                                        <button class="btn primary-outline-btn py-1 w-100">View</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Add Member Model-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title color-primary" id="exampleModalLabel">Create Member</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center">
+                    <img src="../../assets/members.svg" alt="member" height="100">
+                </div>
+                <form class="form-group">
+                    <div class="row gy-3">
+                        <div class="col-12">
+                            <label class="form-label">Member Name</label>
+                            <input type="text" class="form-control" placeholder="Member Name" [(ngModel)]="Member_Name"
+                                [ngModelOptions]="{standalone:true}" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Contact Number</label>
+                            <input type="text" class="form-control" placeholder="Contact Number" [(ngModel)]="Contact"
+                                [ngModelOptions]="{standalone:true}" required pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                                maxlength="10">
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Role</label>
+                            <input type="text" class="form-control" placeholder="Member Role" [(ngModel)]="Role"
+                                [ngModelOptions]="{standalone:true}" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Member Email"
+                                [(ngModel)]="Member_email" [ngModelOptions]="{standalone:true}" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn primary-btn px-4" data-bs-dismiss="modal"
+                    (click)="createMember()">Create</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="container">
+  <div class="btn primary-btn px-5 my-5" [routerLink]="['/Member/dashboard']">Back</div>
+    <div class="row" *ngIf="api.userDetailsObj.locationNotification">
+      <div class="col-12">
+        <div class="fw-bold color-primary">
+          Organizations in {{api.City.city}}
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of api.organizationCityObj">
+        <div class="card shadow p-3 my-3">
+            <div class="">
+              <span class="badge bg-primary float-end" *ngIf="item.status==='Completed'">Verified</span>
+              <span class="badge bg-danger float-end" *ngIf="item.status==='Pending'">Not Verified</span>
+            </div>
+          <div class="fs-4 fw-bold color-primary text-justify">{{item.organization_Name}}</div>
+          <div class="fs-5 color-secondary">{{item.address}}, {{item.city}}, {{item.state}}, {{item.zipcode}}</div>
+          <div class="d-flex justify-content-between">
+            <div class="fw-5 text-secondary">{{item.contactNumber}}</div>
+            <div class="fw-5 text-secondary"></div>
+            <div class="fw-5 text-secondary">{{item.email}}</div>
+          </div>
+          <button type="button" class="btn primary-outline-btn w-100 my-3" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" (click)="getData(item)">
+            Make An Appointment
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="!api.userDetailsObj.locationNotification">
+      <div class="col-12">
+        <div class="fw-bold color-primary">
+          Organizations in {{api.State.state}}
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-4" *ngFor="let item of api.organizationStateObj">
+        <div class="card shadow p-3 my-3">
+            <div class="">
+              <span class="badge bg-primary float-end" *ngIf="item.status==='Completed'">Verified</span>
+              <span class="badge bg-danger float-end" *ngIf="item.status==='Pending'">Not Verified</span>
+            </div>
+          <div class="fs-4 fw-bold color-primary text-justify">{{item.organization_Name}}</div>
+          <div class="fs-5 color-secondary">{{item.address}}, {{item.city}}, {{item.state}}, {{item.zipcode}}</div>
+          <div class="d-flex justify-content-between">
+            <div class="fw-5 text-secondary">{{item.contactNumber}}</div>
+            <div class="fw-5 text-secondary"></div>
+            <div class="fw-5 text-secondary">{{item.email}}</div>
+          </div>
+          <button type="button" class="btn primary-outline-btn w-100 my-3" data-bs-toggle="modal"
+            data-bs-target="#exampleModal" (click)="getData(item)">
+            Make An Appointment
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title color-primary" id="exampleModalLabel">Create an Appointment </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="card p-3 my-3">
+                <div class="fs-4 fw-bold color-primary">{{organizationName}}</div>
+                <div class="fs-5 color-secondary">{{organizationAddress}}</div>
+                <div class="my-3 my-md-1 my-lg-3">
+                  <label for="Appointment_date" class="form-label">Select Date</label>
+                  <input type="date" class="form-control" [(ngModel)]="Appointment_date" [ngModelOptions]="{standalone:true}" required placeholder="MM/DD/YYYY">
+                </div>
+                <div class="my-3 my-md-1 my-lg-3">
+                  <label for="State" class="form-label">Select Time</label>
+                  <select class="form-select" [(ngModel)]="Time" [ngModelOptions]="{standalone:true}" required>
+                      <option [ngValue]="null" [disabled]="true">Select Time</option>
+                      <option *ngFor="let i of TimeOptions" value="{{i.Name}}">{{i.Name}}</option>
+                  </select>
+              </div>
+              <div class="my-3 my-md-1 my-ld-3">
+                <label for="State" class="form-label">Select Reason</label>
+                  <select class="form-select" [(ngModel)]="Appointment_reason" [ngModelOptions]="{standalone:true}" required placeholder="Appointment_Reason">
+                      <option [ngValue]="null" [disabled]="true">Reason</option>
+                      <option value="Blood Test">Blood Test</option>
+                      <option value="Donation" *ngIf="api.Role==='Donor'">Donation</option>
+                  </select>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer d-flex justify-content-between">
+          <button type="button" class="btn btn-secondary px-5" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn primary-btn px-5" (click)="makeAppointment()" data-bs-dismiss="modal">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div>
